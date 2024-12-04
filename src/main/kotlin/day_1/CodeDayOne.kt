@@ -1,6 +1,5 @@
 package org.designation.t.day_1
 
-import java.io.File
 import org.designation.t.getInput
 
 class CodeDayOne {
@@ -21,28 +20,33 @@ class CodeDayOne {
 
     private fun solveFirst(listOfInputs: List<Pair<Int, Int>>) {
         val splitInputs = listOfInputs.unzip()
-        val splitMutableInputs = Pair(splitInputs.first.toMutableList(), splitInputs.second.toMutableList())
+        val (left, right) = Pair(splitInputs.first.toMutableList(), splitInputs.second.toMutableList())
         val differences = mutableListOf<Int>()
 
-        while (splitMutableInputs.first.isNotEmpty()) {
-            val firstMin = splitMutableInputs.first.minOrNull()
-            val secondMin = splitMutableInputs.second.minOrNull()
-            val difference = getDifference(firstMin!!, secondMin!!)
-
-            println("$firstMin - $secondMin = $difference")
+        while (left.isNotEmpty()) {
+            val leftMin = left.minOrNull()
+            val rightMin = right.minOrNull()
+            val difference = getDifference(leftMin!!, rightMin!!)
 
             differences.add(difference)
 
-            splitMutableInputs.first.remove(firstMin)
-            splitMutableInputs.second.remove(secondMin)
-
-
+            left.remove(leftMin)
+            right.remove(rightMin)
         }
 
         println(differences.sum())
     }
 
-    private fun solveSecond(listOfInputs: List<Pair<Int, Int>>) {}
+    private fun solveSecond(listOfInputs: List<Pair<Int, Int>>) {
+        val (left, right) = listOfInputs.unzip()
+        var sum = 0
+
+        left.asSequence().forEach { input ->
+            sum += (input * right.filter { it == input }.size)
+        }
+
+        println(sum)
+    }
 
 
     private fun getDifference(first: Int, second: Int): Int {
